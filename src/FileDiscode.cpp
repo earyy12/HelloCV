@@ -14,7 +14,7 @@ void FileDiscode(string SourceFile,int key){
 	getline(inFile,text);
 	inFile.close();
 	
-	string textcode=TextEncode(text,key);
+	string textcode=TextDiscode(text,key);
 	
 	ofstream outFile("DiscodeFile",ios::out);
 	outFile<<textcode<<endl;
