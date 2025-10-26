@@ -64,6 +64,13 @@ double detectRedAndGetContour(Mat &frame, vector<Point> &maxContour) {
 
 int main() {
     VideoCapture cap("resources/TrafficLight.mp4");
+
+     //获取视频帧率和尺寸，用于设置输出视频
+    int fps = cap.get(CAP_PROP_FPS);//获取帧率
+    Size frameSize(static_cast<int>(cap.get(CAP_PROP_FRAME_WIDTH)),static_cast<int>(cap.get(CAP_PROP_FRAME_HEIGHT)));//获取尺寸
+
+    //用VideoWriter类输出处理后的视频
+    VideoWriter outputVideo("result.avi", VideoWriter::fourcc('X', 'V', 'I', 'D'), fps, frameSize);
     
     Mat frame;
     string resultText;
@@ -71,8 +78,8 @@ int main() {
     
     namedWindow("1", WINDOW_NORMAL);
     
-    while (true) {
-        cap >> frame;
+    while (cap.read(frame)) {
+        
         
         //存储两种颜色的最大轮廓
         vector<Point> redContour, greenContour;
@@ -107,6 +114,9 @@ int main() {
         
         // 显示图像
         imshow("Traffic Light Detection", frame);
+
+        //输出视频
+        outputVideo.write(frame);
         
         // ESC退出
         char key = waitKey(30);
